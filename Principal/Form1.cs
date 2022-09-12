@@ -28,7 +28,7 @@ namespace Principal
         private void Form1_Load(object sender, EventArgs e)
         {
             
-            ArticuloDatos datos = new ArticuloDatos();
+            ArticuloNegocio datos = new ArticuloNegocio();
             lista = datos.Listar();
             dataGridViewArticulos.DataSource = lista;
             CargarImagen(lista[0].ImagenUrl);
