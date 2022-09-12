@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Data.SqlClient;
+using Dominio;
 
-namespace Principal
+namespace Negocio
 {
-    class ArticuloDatos
+    public class ArticuloDatos
     {
         //funcion listar que devuelve una lista de articulos
         public List<Articulo> Listar()

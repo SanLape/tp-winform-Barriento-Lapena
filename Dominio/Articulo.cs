@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Principal
+namespace Dominio
 {
     
-    class Articulo
+    public class Articulo
     {
         //Id,Codigo,Nombre,Descripcion,IdMarca,IdCategoria,ImagenUrl,Precio
         public int Id { get; set; }
