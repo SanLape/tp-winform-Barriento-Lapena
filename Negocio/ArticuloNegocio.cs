@@ -17,7 +17,7 @@ namespace Negocio
 
             try
             {
-                datos.setConsulta("select Id, Codigo, Nombre, Descripcion, IdMarca, IdCategoria, ImagenUrl, Precio from ARTICULOS");
+                datos.setConsulta("select A.Id, A.Codigo, A.Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, A.ImagenUrl, A.Precio from ARTICULOS A, MARCAS M, CATEGORIAS C where A.IdCategoria = C.Id and A.IdMarca = M.Id");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -28,68 +28,51 @@ namespace Negocio
                     aux.Codigo = (string)datos.Lector["Codigo"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Descripcion = (string)datos.Lector["Descripcion"];
-                    aux.IdMarca = (int)datos.Lector["IdMarca"];
-                    aux.IdCategoria = (int)datos.Lector["IdCategoria"];
+
+                    aux.marca = new Marca();
+                    aux.marca.Descripcion = (string)datos.Lector["Marca"];
+
+                    aux.categoria = new Categoria();
+                    aux.categoria.Descripcion = (string)datos.Lector["Categoria"];
+
                     aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
                     aux.Precio = (decimal)datos.Lector["Precio"];
 
                     lista.Add(aux);
-
                 }
                 return lista;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
             finally
             {
                 datos.cerrarConexion();
             }
-            
-            /*
-            SqlConnection conexion = new SqlConnection();
-            SqlCommand comando = new SqlCommand();
-            SqlDataReader lector;
-            
+       
+        }
+
+        public void Agregar(Articulo Nuevo)
+        {
+            //conexion a base de datos
+            AccesoDatos datos = new AccesoDatos();
             try
-            {
-                conexion.ConnectionString = "server=.\\SQLEXPRESS; database=CATALOGO_DB; integrated security=true";
-                comando.CommandType = System.Data.CommandType.Text;
-                comando.CommandText = "select Id,Codigo,Nombre,Descripcion,IdMarca,IdCategoria,ImagenUrl,Precio from ARTICULOS";
-                //ejecutar el comando en la conexion
-                comando.Connection = conexion;
-                //abrir conexion
-                conexion.Open();
-                //ejecutar lectura
-                lector = comando.ExecuteReader();
-                //si el lector lee algo se ubica en la 1ra posicion (registro) y con el aux le asignamos los datos y se agrega a la lista
-                while (lector.Read())
-                {
-                    Articulo aux = new Articulo();
-                    aux.Id = (int)lector["Id"];
-                    aux.Codigo = (string)lector["Codigo"];
-                    aux.Descripcion = (string)lector["Descripcion"];
-                    aux.Nombre = (string)lector["Nombre"];
-                    aux.IdMarca = (int)lector["IdMarca"];
-                    aux.IdCategoria = (int)lector["IdCategoria"];
-                    aux.ImagenUrl = (string)lector["ImagenUrl"];
-                    aux.Precio = (decimal)lector["Precio"];
-
-                    lista.Add(aux);
-
-                }
-                //una vez que sale del while se cierra la conexion
-                conexion.Close();
-                return lista;
+            {   
+                datos.setConsulta("insert into ARTICULOS (Codigo,Nombre,Descripcion,IdMarca,IdCategoria,ImagenUrl,Precio)values("+Nuevo.Codigo+",'"+Nuevo.Nombre+"','"+Nuevo.Descripcion+"',@IdMarca,@IdCategoria,'"+Nuevo.ImagenUrl+"',"+Nuevo.Precio+")");
+                datos.SetParametros("@IdMarca", Nuevo.marca.Id);
+                datos.SetParametros("@IdCategoria", Nuevo.categoria.Id);
+                datos.ejecutarAccion();
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-            */
+            finally
+            {
+                datos.cerrarConexion();
+            }    
+
         }
 
     }

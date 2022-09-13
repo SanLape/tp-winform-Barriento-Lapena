@@ -27,11 +27,24 @@ namespace Principal
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            Cargar();
+        }
+
+        private void Cargar()
+        {
             ArticuloNegocio datos = new ArticuloNegocio();
-            lista = datos.Listar();
-            dataGridViewArticulos.DataSource = lista;
-            CargarImagen(lista[0].ImagenUrl);
+            try
+            {
+                lista = datos.Listar();
+                dataGridViewArticulos.DataSource = lista;
+                dataGridViewArticulos.Columns["ImagenUrl"].Visible = false;
+                CargarImagen(lista[0].ImagenUrl);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         private void dataGridViewArticulos_SelectionChanged(object sender, EventArgs e)
@@ -51,6 +64,13 @@ namespace Principal
             {
                 pictureBoxImgArticulo.Load("https://stockperfume.com/wp-content/uploads/2022/02/2248045_2adf358a479610b04c0848672d49776e.jpg");
             }
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            frmCargarArticulo alta = new frmCargarArticulo();
+            alta.ShowDialog();
+            Cargar();
         }
     }
 }

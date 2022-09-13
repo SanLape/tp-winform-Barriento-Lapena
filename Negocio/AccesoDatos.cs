@@ -43,11 +43,30 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
-        //Cierra la conexion.
+
+        public void ejecutarAccion()
+        {
+            comando.Connection = conexion;
+            try
+            {
+                conexion.Open();
+                comando.ExecuteNonQuery(); //ejecucion  de no consulta
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public void SetParametros(string nombre, object valor)//sirve para agregar parametros al comando, recibe el nombre de la variable y el objeto
+        {
+            comando.Parameters.AddWithValue(nombre, valor);
+        }
+        
         public void cerrarConexion()
         {
             if(lector != null)
