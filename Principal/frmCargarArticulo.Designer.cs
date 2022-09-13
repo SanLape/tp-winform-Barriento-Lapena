@@ -137,6 +137,7 @@
             this.txtUrlImagen.Name = "txtUrlImagen";
             this.txtUrlImagen.Size = new System.Drawing.Size(136, 22);
             this.txtUrlImagen.TabIndex = 4;
+            this.txtUrlImagen.Leave += new System.EventHandler(this.txtUrlImagen_Leave);
             // 
             // lblUrlImagen
             // 
@@ -188,6 +189,7 @@
             this.pictureBoxImagen.Location = new System.Drawing.Point(334, 27);
             this.pictureBoxImagen.Name = "pictureBoxImagen";
             this.pictureBoxImagen.Size = new System.Drawing.Size(224, 205);
+            this.pictureBoxImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxImagen.TabIndex = 16;
             this.pictureBoxImagen.TabStop = false;
             // 

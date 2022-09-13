@@ -12,13 +12,16 @@ namespace Dominio
     {
         //Id,Codigo,Nombre,Descripcion,IdMarca,IdCategoria,ImagenUrl,Precio
         public int Id { get; set; }
+        [DisplayName("Código")]
         public string Codigo { get; set; }
         public string Nombre { get; set; }
+        [DisplayName("Decripción")]
         public string Descripcion { get; set; }
         public string ImagenUrl { get; set; }
         public decimal Precio { get; set; }
-        
+        [DisplayName("Marca")]
         public Marca marca { get; set; }
+        [DisplayName("Categoría")]
         public Categoria categoria { get; set; }
     }
 }

@@ -34,6 +34,7 @@ namespace Principal
                 Nuevo.Codigo = txtCodigo.Text;
                 Nuevo.Nombre = txtNombre.Text;
                 Nuevo.Descripcion = txtDescripcion.Text;
+                Nuevo.ImagenUrl = txtUrlImagen.Text;
                 Nuevo.Precio = decimal.Parse(txtPrecio.Text);
                 Nuevo.marca = (Marca)cboxMarca.SelectedItem;
                 Nuevo.categoria = (Categoria)cboxCategoria.SelectedItem;
@@ -44,7 +45,6 @@ namespace Principal
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
@@ -62,6 +62,24 @@ namespace Principal
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        private void txtUrlImagen_Leave(object sender, EventArgs e)
+        {
+            cargarImagen(txtUrlImagen.Text);
+        }
+
+        private void cargarImagen(string img)
+        {
+            try
+            {
+                pictureBoxImagen.Load(img);
+            }
+            catch (Exception)
+            {
+
+                pictureBoxImagen.Load("https://stockperfume.com/wp-content/uploads/2022/02/2248045_2adf358a479610b04c0848672d49776e.jpg");
             }
         }
     }
