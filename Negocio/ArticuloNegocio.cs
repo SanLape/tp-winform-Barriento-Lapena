@@ -17,7 +17,7 @@ namespace Negocio
 
             try
             {
-                datos.setConsulta("select A.Id, A.Codigo, A.Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, A.ImagenUrl, A.Precio from ARTICULOS A, MARCAS M, CATEGORIAS C where A.IdCategoria = C.Id and A.IdMarca = M.Id");
+                datos.setConsulta("select A.Id, A.Codigo, A.Nombre, A.Descripcion, M.Descripcion Marca, M.Id IdMar, C.Descripcion Categoria, C.Id IdCat, A.ImagenUrl, A.Precio from ARTICULOS A, MARCAS M, CATEGORIAS C where A.IdCategoria = C.Id and A.IdMarca = M.Id");
                 datos.ejecutarLectura();
 
                 while (datos.Lector.Read())
@@ -29,12 +29,14 @@ namespace Negocio
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Descripcion = (string)datos.Lector["Descripcion"];
 
-                    aux.marca = new Marca();
+                    aux.marca = new Marca();                                
+                    aux.marca.Id = (int)datos.Lector["IdMar"];
                     aux.marca.Descripcion = (string)datos.Lector["Marca"];
 
                     aux.categoria = new Categoria();
+                    aux.categoria.Id = (int)datos.Lector["IdCat"];
                     aux.categoria.Descripcion = (string)datos.Lector["Categoria"];
-
+                    
                     aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
                     aux.Precio = (decimal)datos.Lector["Precio"];
 
@@ -73,6 +75,34 @@ namespace Negocio
                 datos.cerrarConexion();
             }    
 
+        }
+        public void modificar(Articulo art)
+        {
+            AccesoDatos Datos = new AccesoDatos();
+            try
+            {
+                Datos.setConsulta("update ARTICULOS set Codigo = @artCod, Nombre = @artNombre, Descripcion = @descrip, IdMarca = @idMarca, IdCategoria = @idCat, ImagenUrl = @urlimg, Precio = @precio WHERE Id = @id");
+                Datos.SetParametros("@artCod", art.Codigo);
+                Datos.SetParametros("@artNombre", art.Nombre);
+                Datos.SetParametros("@descrip", art.Descripcion);
+                Datos.SetParametros("@idMarca", art.marca.Id);
+                Datos.SetParametros("@idCat", art.categoria.Id);
+                Datos.SetParametros("@urlimg", art.ImagenUrl);
+                Datos.SetParametros("@precio", art.Precio);
+                Datos.SetParametros("@id", art.Id);
+
+                Datos.ejecutarAccion();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                Datos.cerrarConexion();
+            }
         }
 
     }

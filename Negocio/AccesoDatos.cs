@@ -55,10 +55,10 @@ namespace Negocio
                 conexion.Open();
                 comando.ExecuteNonQuery(); //ejecucion  de no consulta
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 

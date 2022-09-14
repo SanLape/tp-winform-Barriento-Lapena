@@ -14,9 +14,16 @@ namespace Principal
 {
     public partial class frmCargarArticulo : Form
     {
+        private Articulo articulo = null;
         public frmCargarArticulo()
         {
             InitializeComponent();
+        }
+        public frmCargarArticulo(Articulo art)
+        {
+            InitializeComponent();
+            this.articulo = art;
+            Text = "Modificar Articulo";
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -26,21 +33,34 @@ namespace Principal
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            Articulo Nuevo = new Articulo();
+            
             ArticuloNegocio Negocio = new ArticuloNegocio();
             try
             {
-                Nuevo.Id = int.Parse(txtId.Text);
-                Nuevo.Codigo = txtCodigo.Text;
-                Nuevo.Nombre = txtNombre.Text;
-                Nuevo.Descripcion = txtDescripcion.Text;
-                Nuevo.ImagenUrl = txtUrlImagen.Text;
-                Nuevo.Precio = decimal.Parse(txtPrecio.Text);
-                Nuevo.marca = (Marca)cboxMarca.SelectedItem;
-                Nuevo.categoria = (Categoria)cboxCategoria.SelectedItem;
+                if(articulo == null)
+                    articulo = new Articulo();
+                
+                
+                articulo.Id = int.Parse(txtId.Text);
+                articulo.Codigo = txtCodigo.Text;
+                articulo.Nombre = txtNombre.Text;
+                articulo.Descripcion = txtDescripcion.Text;
+                articulo.ImagenUrl = txtUrlImagen.Text;
+                articulo.Precio = decimal.Parse(txtPrecio.Text);
+                articulo.marca = (Marca)cboxMarca.SelectedItem;
+                articulo.categoria = (Categoria)cboxCategoria.SelectedItem;
 
-                Negocio.Agregar(Nuevo);
-                MessageBox.Show("Guardado!");
+                if(articulo.Id != 0)
+                {
+                    Negocio.modificar(articulo);
+                    MessageBox.Show("Modificado");
+                }
+                else
+                {
+                    Negocio.Agregar(articulo);
+                    MessageBox.Show("Guardado!");
+                }
+
                 Close();
             }
             catch (Exception ex)
@@ -57,7 +77,29 @@ namespace Principal
             try
             {
                 cboxCategoria.DataSource = categoriaNegocio.Listar();
+                
+                cboxCategoria.ValueMember = "Id";               // datos "escondido" => atrivuto de la calse 
+                cboxCategoria.DisplayMember = "Descripcion";    // datos q vamos a mostra
+                
                 cboxMarca.DataSource = marcaNegocio.Listar();
+                
+                cboxMarca.ValueMember = "Id";
+                cboxMarca.DisplayMember = "Descripcion";
+
+                if(articulo != null)
+                {
+                    txtId.Text = articulo.Nombre;
+                    txtCodigo.Text = articulo.Codigo;
+                    txtNombre.Text = articulo.Nombre;
+                    txtDescripcion.Text = articulo.Descripcion;
+                    txtUrlImagen.Text = articulo.ImagenUrl;
+                    txtPrecio.Text = articulo.Precio.ToString();
+
+                    cargarImagen(articulo.ImagenUrl);
+
+                    cboxMarca.SelectedValue = articulo.marca.Id;
+                    cboxCategoria.SelectedValue = articulo.categoria.Id;
+                }
             }
             catch (Exception ex)
             {

@@ -72,5 +72,15 @@ namespace Principal
             alta.ShowDialog();
             Cargar();
         }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            Articulo seleccionado;
+            seleccionado = (Articulo)dataGridViewArticulos.CurrentRow.DataBoundItem;
+
+            frmCargarArticulo modificar = new frmCargarArticulo(seleccionado);
+            modificar.ShowDialog();
+            Cargar();
+        }
     }
 }
