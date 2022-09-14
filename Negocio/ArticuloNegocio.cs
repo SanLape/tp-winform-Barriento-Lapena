@@ -61,7 +61,7 @@ namespace Negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {   
-                datos.setConsulta("insert into ARTICULOS (Codigo,Nombre,Descripcion,IdMarca,IdCategoria,ImagenUrl,Precio)values("+Nuevo.Codigo+",'"+Nuevo.Nombre+"','"+Nuevo.Descripcion+"',@IdMarca,@IdCategoria,'"+Nuevo.ImagenUrl+"',"+Nuevo.Precio+")");
+                datos.setConsulta("insert into ARTICULOS (Codigo,Nombre,Descripcion,IdMarca,IdCategoria,ImagenUrl,Precio)values('"+Nuevo.Codigo+"','"+Nuevo.Nombre+"','"+Nuevo.Descripcion+"',@IdMarca,@IdCategoria,'"+Nuevo.ImagenUrl+"','"+Nuevo.Precio+"')");
                 datos.SetParametros("@IdMarca", Nuevo.marca.Id);
                 datos.SetParametros("@IdCategoria", Nuevo.categoria.Id);
                 datos.ejecutarAccion();
