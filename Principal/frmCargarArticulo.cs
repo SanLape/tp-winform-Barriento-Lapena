@@ -38,10 +38,8 @@ namespace Principal
             try
             {
                 if(articulo == null)
-                    articulo = new Articulo();
-                
-                
-                articulo.Id = int.Parse(txtId.Text);
+                articulo = new Articulo();//se crea un nuevo articulo vacio
+                          
                 articulo.Codigo = txtCodigo.Text;
                 articulo.Nombre = txtNombre.Text;
                 articulo.Descripcion = txtDescripcion.Text;
@@ -50,9 +48,9 @@ namespace Principal
                 articulo.marca = (Marca)cboxMarca.SelectedItem;
                 articulo.categoria = (Categoria)cboxCategoria.SelectedItem;
 
-                if(articulo.Id != 0)
+                if(articulo.Id !=0)
                 {
-                    Negocio.modificar(articulo);
+                    Negocio.Modificar(articulo);
                     MessageBox.Show("Modificado");
                 }
                 else
@@ -88,7 +86,6 @@ namespace Principal
 
                 if(articulo != null)
                 {
-                    txtId.Text = articulo.Nombre;
                     txtCodigo.Text = articulo.Codigo;
                     txtNombre.Text = articulo.Nombre;
                     txtDescripcion.Text = articulo.Descripcion;

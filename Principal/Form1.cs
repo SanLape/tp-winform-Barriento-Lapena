@@ -82,5 +82,24 @@ namespace Principal
             modificar.ShowDialog();
             Cargar();
         }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            ArticuloNegocio negocio = new ArticuloNegocio();
+            Articulo seleccionado = (Articulo)dataGridViewArticulos.CurrentRow.DataBoundItem;
+            try
+            {
+                DialogResult respuestaYesNo = MessageBox.Show("Confirmar baja del articulo?","Eliminar",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (respuestaYesNo == DialogResult.Yes)
+                {
+                    negocio.Eliminar(seleccionado.Id);
+                    Cargar();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
