@@ -37,7 +37,7 @@ namespace Principal
             {
                 lista = datos.Listar();
                 dataGridViewArticulos.DataSource = lista;
-                dataGridViewArticulos.Columns["ImagenUrl"].Visible = false;
+                ocultarColumnas();
                 CargarImagen(lista[0].ImagenUrl);
             }
             catch (Exception ex)
@@ -47,11 +47,21 @@ namespace Principal
             }
         }
 
+        private void ocultarColumnas()
+        {
+            dataGridViewArticulos.Columns["Id"].Visible = false;
+            dataGridViewArticulos.Columns["ImagenUrl"].Visible = false;
+        }
+
         private void dataGridViewArticulos_SelectionChanged(object sender, EventArgs e)
         {
             //DataBoundItem = objeto enlazado a la fila actual (hay que castear al tipo de obj ) y se lo asiganmos a una variable
-            Articulo seleccionado = (Articulo)dataGridViewArticulos.CurrentRow.DataBoundItem;
-            CargarImagen(seleccionado.ImagenUrl);
+            if(dataGridViewArticulos.CurrentRow != null)
+            {
+                Articulo seleccionado = (Articulo)dataGridViewArticulos.CurrentRow.DataBoundItem;
+                CargarImagen(seleccionado.ImagenUrl);
+            }
+            
         }
 
         private void CargarImagen(string img)
@@ -100,6 +110,35 @@ namespace Principal
             {
                 throw ex;
             }
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtFiltro_TextChanged(object sender, EventArgs e)
+        {
+            List<Articulo> listaFilrada;
+            string filtro = txtFiltro.Text;
+
+            if (filtro.Length >= 3)
+            {
+                filtro = filtro.ToUpper();
+
+                listaFilrada = lista.FindAll(x => x.Codigo.ToUpper().Contains(filtro) || x.Nombre.ToUpper().Contains(filtro) || x.marca.Descripcion.ToUpper().Contains(filtro) || x.categoria.Descripcion.ToUpper().Contains(filtro));
+
+                // .ToUpper() convierte los strings en MAYUSCULAS para haecr las comparaciones
+                // .Contains compara las palabras BUSCADA.CONTAINS( DONDE )
+            }
+            else
+            {
+                listaFilrada = lista;
+            }
+
+            dataGridViewArticulos.DataSource = null;
+            dataGridViewArticulos.DataSource = listaFilrada;
+            ocultarColumnas();
         }
     }
 }
