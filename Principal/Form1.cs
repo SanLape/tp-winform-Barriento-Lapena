@@ -116,27 +116,56 @@ namespace Principal
                 throw ex;
             }
         }
+        private bool ValidarFiltroAvanzado()
+        {
+            bool validar = false;
+            if (cboxCampo.SelectedIndex<0)
+            {
+                //MessageBox.Show("Por favor seleccionar un campo");
+                errorProviderFiltroAvanzado.SetError(cboxCampo, "Debe seleccionar un campo");
+                validar = true;
+            }
 
+            if (cboxCriterio.SelectedIndex<0)
+            {
+                //MessageBox.Show("Por favor seleccionar un criterio");
+                errorProviderFiltroAvanzado.SetError(cboxCriterio, "Debe seleccionar un criterio");
+
+                validar = true;
+            }
+            return validar;
+        }
+        private void BorrarErrorProviderFiltroAvanzado()//elimina el mensaje de error una vez solucionado
+        {
+            errorProviderFiltroAvanzado.SetError(cboxCampo, "");
+            errorProviderFiltroAvanzado.SetError(cboxCriterio, "");
+        }
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             ArticuloNegocio negocio = new ArticuloNegocio();
             try
             {
+                BorrarErrorProviderFiltroAvanzado();
+                if (ValidarFiltroAvanzado())
+                {
+                    return;
+                }
                 //necesitamos el campo, criterio y filtro seleccionado y pasarlos a string
                 string campo = cboxCampo.SelectedItem.ToString();
                 string criterio = cboxCriterio.SelectedItem.ToString();
                 string filtro = txtFiltroAvanzado.Text;
 
                 dataGridViewArticulos.DataSource = negocio.FiltrarAvanzado(campo, criterio, filtro);
+                if(dataGridViewArticulos.Rows.Count == 0)
+                {
+                    btnModificar.Enabled = false;
+                    btnEliminar.Enabled = false;
+                }
             }
             catch (Exception ex)    
             {
                 throw ex;
             }
-            
-
-             
-                
         }
 
         private void txtFiltro_TextChanged(object sender, EventArgs e)
@@ -149,7 +178,6 @@ namespace Principal
                 filtro = filtro.ToUpper();
 
                 listaFilrada = lista.FindAll(x => x.Codigo.ToUpper().Contains(filtro) || x.Nombre.ToUpper().Contains(filtro) || x.marca.Descripcion.ToUpper().Contains(filtro) || x.categoria.Descripcion.ToUpper().Contains(filtro));
-
                 // .ToUpper() convierte los strings en MAYUSCULAS para haecr las comparaciones
                 // .Contains compara las palabras BUSCADA.CONTAINS( DONDE )
             }
@@ -161,6 +189,11 @@ namespace Principal
             dataGridViewArticulos.DataSource = null;
             dataGridViewArticulos.DataSource = listaFilrada;
             ocultarColumnas();
+            if (dataGridViewArticulos.Rows.Count == 0)
+            {
+                btnModificar.Enabled = false;
+                btnEliminar.Enabled = false;
+            }
         }
 
  

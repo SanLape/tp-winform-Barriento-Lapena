@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dataGridViewArticulos = new System.Windows.Forms.DataGridView();
             this.pictureBoxImgArticulo = new System.Windows.Forms.PictureBox();
             this.btnAgregar = new System.Windows.Forms.Button();
@@ -43,9 +44,11 @@
             this.cboxCriterio = new System.Windows.Forms.ComboBox();
             this.cboxCampo = new System.Windows.Forms.ComboBox();
             this.txtFiltro = new System.Windows.Forms.TextBox();
+            this.errorProviderFiltroAvanzado = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewArticulos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImgArticulo)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderFiltroAvanzado)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridViewArticulos
@@ -207,6 +210,10 @@
             this.txtFiltro.TabIndex = 6;
             this.txtFiltro.TextChanged += new System.EventHandler(this.txtFiltro_TextChanged);
             // 
+            // errorProviderFiltroAvanzado
+            // 
+            this.errorProviderFiltroAvanzado.ContainerControl = this;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -229,6 +236,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImgArticulo)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderFiltroAvanzado)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -251,6 +259,7 @@
         private System.Windows.Forms.ComboBox cboxCriterio;
         private System.Windows.Forms.ComboBox cboxCampo;
         private System.Windows.Forms.TextBox txtFiltro;
+        private System.Windows.Forms.ErrorProvider errorProviderFiltroAvanzado;
     }
 }
 

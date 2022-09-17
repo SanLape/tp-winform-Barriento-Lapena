@@ -30,6 +30,15 @@ namespace Principal
         {
             Close();
         }
+        private void BorrarErrorProviderGuardarArticulo()//elimina el mensaje de error una vez solucionado
+        {
+            errorProviderCargarArticulo.SetError(txtCodigo, "");
+            errorProviderCargarArticulo.SetError(cboxCategoria , "");
+            errorProviderCargarArticulo.SetError(cboxMarca , "");
+            errorProviderCargarArticulo.SetError(txtDescripcion, "");
+            errorProviderCargarArticulo.SetError(txtNombre, "");
+            errorProviderCargarArticulo.SetError(txtPrecio, "");
+        }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -39,7 +48,11 @@ namespace Principal
             {
                 if(articulo == null)
                 articulo = new Articulo();//se crea un nuevo articulo vacio
-                          
+                BorrarErrorProviderGuardarArticulo();
+                if (ValidarGuardarArticulo())
+                {
+                    return;
+                }
                 articulo.Codigo = txtCodigo.Text;
                 articulo.Nombre = txtNombre.Text;
                 articulo.Descripcion = txtDescripcion.Text;
@@ -66,6 +79,59 @@ namespace Principal
                 throw ex;
             }
         }
+        private bool SoloNumeros(string cadena)
+        {
+            bool validar = false;
+            foreach (char item in cadena)
+            {
+                if (!(char.IsNumber(item)))
+                {
+                    validar = true;
+                }
+            }
+            return validar;
+        }
+        private bool ValidarGuardarArticulo()
+        {
+            bool validar = false;
+            if (string.IsNullOrEmpty(txtCodigo.Text))
+            {
+                errorProviderCargarArticulo.SetError(txtCodigo, "Debe escribir un código");
+                 validar = true;
+            }
+            if (string.IsNullOrEmpty(txtNombre.Text))
+            {
+                errorProviderCargarArticulo.SetError(txtNombre, "Debe escribir un nombre");
+                validar = true;
+            }
+            if (string.IsNullOrEmpty(txtDescripcion.Text))
+            {
+                errorProviderCargarArticulo.SetError(txtDescripcion, "Debe escribir una descripcion");
+                validar = true;
+            }
+            if (string.IsNullOrEmpty(txtPrecio.Text))
+            {
+                errorProviderCargarArticulo.SetError(txtPrecio, "Debe escribir un precio");
+                validar = true;
+            }
+            if (SoloNumeros(txtPrecio.Text)){
+                errorProviderCargarArticulo.SetError(txtPrecio, "Debe escribir solo numeros");
+                validar = true;
+            }
+            
+            if (cboxMarca.SelectedIndex < 0)
+            {
+                errorProviderCargarArticulo.SetError(cboxMarca, "Debe seleccionar una marca");
+                 validar = true;
+            }
+            if (cboxCategoria.SelectedIndex<0)
+            {
+                errorProviderCargarArticulo.SetError(cboxCategoria, "Debe seleccionar una categoría");
+                 validar = true;
+            }
+            
+            return validar;
+        }
 
         private void frmCargarArticulo_Load(object sender, EventArgs e)
         {
@@ -75,16 +141,16 @@ namespace Principal
             try
             {
                 cboxCategoria.DataSource = categoriaNegocio.Listar();
-                
                 cboxCategoria.ValueMember = "Id";               // datos "escondido" => atrivuto de la calse 
                 cboxCategoria.DisplayMember = "Descripcion";    // datos q vamos a mostra
-                
+                cboxCategoria.SelectedIndex = -1;
+
                 cboxMarca.DataSource = marcaNegocio.Listar();
-                
                 cboxMarca.ValueMember = "Id";
                 cboxMarca.DisplayMember = "Descripcion";
+                cboxMarca.SelectedIndex = -1;
 
-                if(articulo != null)
+                if (articulo != null)
                 {
                     txtCodigo.Text = articulo.Codigo;
                     txtNombre.Text = articulo.Nombre;
@@ -117,7 +183,6 @@ namespace Principal
             }
             catch (Exception)
             {
-
                 pictureBoxImagen.Load("https://stockperfume.com/wp-content/uploads/2022/02/2248045_2adf358a479610b04c0848672d49776e.jpg");
             }
         }
