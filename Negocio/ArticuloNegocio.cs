@@ -38,7 +38,7 @@ namespace Negocio
                     aux.categoria.Descripcion = (string)datos.Lector["Categoria"];
                     
                     aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
-                    aux.Precio = (decimal)datos.Lector["Precio"];
+                    aux.Precio = Math.Round((decimal)datos.Lector["Precio"], 2);
 
                     lista.Add(aux);
                 }
@@ -175,6 +175,12 @@ namespace Negocio
                                 break;
                         }
                         break;
+                    case "Marca":
+                        consulta += "M.Descripcion = '"+criterio+"' ";
+                        break;
+                    case "Categoría":
+                        consulta += "C.Descripcion = '" + criterio + "' ";
+                        break;
                     default:
                         break;
                 }
@@ -198,7 +204,7 @@ namespace Negocio
                     aux.categoria.Descripcion = (string)datos.Lector["Categoria"];
 
                     aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
-                    aux.Precio = (decimal)datos.Lector["Precio"];
+                    aux.Precio = Math.Round((decimal)datos.Lector["Precio"],2);
 
                     lista.Add(aux);
                 }
@@ -207,7 +213,6 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
 

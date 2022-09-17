@@ -132,7 +132,6 @@ namespace Principal
             
             return validar;
         }
-
         private void frmCargarArticulo_Load(object sender, EventArgs e)
         {
             //precargar en los desplegables de marca y categoria
@@ -186,5 +185,6 @@ namespace Principal
                 pictureBoxImagen.Load("https://stockperfume.com/wp-content/uploads/2022/02/2248045_2adf358a479610b04c0848672d49776e.jpg");
             }
         }
+
     }
 }

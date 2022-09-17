@@ -13,10 +13,10 @@ using Negocio;
 
 namespace Principal
 {
-    public partial class Form1 : Form
+    public partial class frmCatalogo : Form
     {
         private List<Articulo> lista;
-        public Form1()
+        public frmCatalogo()
         {
             InitializeComponent();
         }
@@ -27,12 +27,23 @@ namespace Principal
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
+        {  
             Cargar();
+            //reinician los combobox
+            cboxCriterio.DataSource = null;
+            cboxCriterio.Items.Clear();
+            cboxCampo.Items.Clear();
+            //
             cboxCampo.Items.Add("Código");
             cboxCampo.Items.Add("Nombre");
             cboxCampo.Items.Add("Descripción");
+            cboxCampo.Items.Add("Marca");
+            cboxCampo.Items.Add("Categoría");
+            
 
+            lblFiltroAvanzado.Visible = false;
+            txtFiltroAvanzado.Clear();
+            txtFiltroAvanzado.Visible = false;
         }
 
         private void Cargar()
@@ -201,21 +212,66 @@ namespace Principal
         {
             string seleccionado = cboxCampo.SelectedItem.ToString();
 
-            if (seleccionado == "Código")
+            MarcaNegocio marcaNegocio = new MarcaNegocio();
+            CategoriaNegocio categoriaNegocio = new CategoriaNegocio(); 
+            switch (seleccionado)
             {
-                cboxCriterio.Items.Clear();
-                cboxCriterio.Items.Add("Es igual a");
-                cboxCriterio.Items.Add("Contiene");
-            }
-            else
-            {
-                cboxCriterio.Items.Clear();
-                cboxCriterio.Items.Add("Empieza con");
-                cboxCriterio.Items.Add("Termina con");
-                cboxCriterio.Items.Add("Contiene");
+                case "Código":
+                    cboxCriterio.DataSource = null;
+                    cboxCriterio.Items.Clear();
+                    cboxCriterio.Items.Add("Es igual a");
+                    cboxCriterio.Items.Add("Contiene");
+                    lblFiltroAvanzado.Visible = true;
+                    txtFiltroAvanzado.Visible = true;
+                    break;
+                case "Nombre":
+                    cboxCriterio.DataSource = null;
+                    cboxCriterio.Items.Clear();
+                    cboxCriterio.Items.Add("Empieza con");
+                    cboxCriterio.Items.Add("Termina con");
+                    cboxCriterio.Items.Add("Contiene");
+                    lblFiltroAvanzado.Visible = true;
+                    txtFiltroAvanzado.Visible = true;
+                    break;
+                case "Descripción":
+                    cboxCriterio.DataSource = null;
+                    cboxCriterio.Items.Clear();
+                    cboxCriterio.Items.Add("Empieza con");
+                    cboxCriterio.Items.Add("Termina con");
+                    cboxCriterio.Items.Add("Contiene");
+                    lblFiltroAvanzado.Visible = true;
+                    txtFiltroAvanzado.Visible = true;
+                    break;
+                case "Marca":
+                    cboxCriterio.DataSource = null;
+                    cboxCriterio.Items.Clear();
+                    cboxCriterio.DataSource = marcaNegocio.Listar();
+                    cboxCriterio.SelectedIndex = -1;
+                    lblFiltroAvanzado.Visible = false;
+                    txtFiltroAvanzado.Visible = false;
+                    break;
+                case "Categoría":
+                    cboxCriterio.DataSource = null;
+                    cboxCriterio.Items.Clear();
+                    cboxCriterio.DataSource = categoriaNegocio.Listar();
+                    cboxCriterio.SelectedIndex = - 1;
+                    lblFiltroAvanzado.Visible = false;
+                    txtFiltroAvanzado.Visible = false;
+                    break;
+                default:
+                    break;
             }
         }
 
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
 
+        }
+
+        private void btnBorrar_Click(object sender, EventArgs e)
+        {
+            
+            Form1_Load(sender, e);
+        }
     }
 }
