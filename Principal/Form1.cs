@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Dominio;
@@ -28,6 +29,10 @@ namespace Principal
         private void Form1_Load(object sender, EventArgs e)
         {
             Cargar();
+            cboxCampo.Items.Add("Código");
+            cboxCampo.Items.Add("Nombre");
+            cboxCampo.Items.Add("Descripción");
+
         }
 
         private void Cargar()
@@ -114,7 +119,24 @@ namespace Principal
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
+            ArticuloNegocio negocio = new ArticuloNegocio();
+            try
+            {
+                //necesitamos el campo, criterio y filtro seleccionado y pasarlos a string
+                string campo = cboxCampo.SelectedItem.ToString();
+                string criterio = cboxCriterio.SelectedItem.ToString();
+                string filtro = txtFiltroAvanzado.Text;
 
+                dataGridViewArticulos.DataSource = negocio.FiltrarAvanzado(campo, criterio, filtro);
+            }
+            catch (Exception ex)    
+            {
+                throw ex;
+            }
+            
+
+             
+                
         }
 
         private void txtFiltro_TextChanged(object sender, EventArgs e)
@@ -140,5 +162,27 @@ namespace Principal
             dataGridViewArticulos.DataSource = listaFilrada;
             ocultarColumnas();
         }
+
+ 
+        private void cboxCampo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string seleccionado = cboxCampo.SelectedItem.ToString();
+
+            if (seleccionado == "Código")
+            {
+                cboxCriterio.Items.Clear();
+                cboxCriterio.Items.Add("Es igual a");
+                cboxCriterio.Items.Add("Contiene");
+            }
+            else
+            {
+                cboxCriterio.Items.Clear();
+                cboxCriterio.Items.Add("Empieza con");
+                cboxCriterio.Items.Add("Termina con");
+                cboxCriterio.Items.Add("Contiene");
+            }
+        }
+
+
     }
 }

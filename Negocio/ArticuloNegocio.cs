@@ -120,5 +120,97 @@ namespace Negocio
                 throw ex;
             }
         }
+
+        public List<Articulo> FiltrarAvanzado(string campo, string criterio, string filtro)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            List<Articulo> lista = new List<Articulo>();
+            try
+            {
+                string consulta = "select A.Id, A.Codigo, A.Nombre, A.Descripcion, M.Descripcion Marca, M.Id IdMar, C.Descripcion Categoria, C.Id IdCat, A.ImagenUrl, A.Precio from ARTICULOS A, MARCAS M, CATEGORIAS C where A.IdCategoria = C.Id and A.IdMarca = M.Id and ";
+                switch (campo)
+                {
+                    case "Código":
+                        switch (criterio)
+                        {
+                            case "Es igual a":
+                                consulta += "A.Codigo =  '"+filtro+"' ";
+                                break;
+                            case "Contiene":
+                                consulta += "A.Codigo like '%"+filtro+"%' ";
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case "Nombre":
+                        switch (criterio)
+                        {
+                            case "Empieza con":
+                                consulta += "A.Nombre like '" + filtro + "%' ";
+                                break;
+                            case "Termina con":
+                                consulta += "A.Nombre like '%" + filtro + "' ";
+                                break;
+                            case "Contiene":
+                                consulta += "A.Nombre like '%" + filtro + "%' ";
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case "Descripción":
+                        switch (criterio)
+                        {
+                            case "Empieza con":
+                                consulta += "A.Descripcion like '" + filtro + "%' ";
+                                break;
+                            case "Termina con":
+                                consulta += "A.Descripcion like '%" + filtro + "' ";
+                                break;
+                            case "Contiene":
+                                consulta += "A.Descripcion like '%" + filtro + "%' ";
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                datos.setConsulta(consulta);
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    Articulo aux = new Articulo();
+
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.Codigo = (string)datos.Lector["Codigo"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Descripcion = (string)datos.Lector["Descripcion"];
+
+                    aux.marca = new Marca();
+                    aux.marca.Id = (int)datos.Lector["IdMar"];
+                    aux.marca.Descripcion = (string)datos.Lector["Marca"];
+
+                    aux.categoria = new Categoria();
+                    aux.categoria.Id = (int)datos.Lector["IdCat"];
+                    aux.categoria.Descripcion = (string)datos.Lector["Categoria"];
+
+                    aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
+                    aux.Precio = (decimal)datos.Lector["Precio"];
+
+                    lista.Add(aux);
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
     }
 }
